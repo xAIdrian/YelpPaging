@@ -9,6 +9,7 @@ import dagger.android.support.DaggerApplication
 import javax.inject.Inject
 
 class WeedmapsApp: DaggerApplication(), HasActivityInjector {
+
     @Inject
     lateinit var activityAndroidInjector: DispatchingAndroidInjector<Activity>
 

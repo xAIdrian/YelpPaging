@@ -2,7 +2,8 @@ package com.adrian.weedmapschallenge.dagger
 
 import android.app.Application
 import android.content.Context
-import android.net.ConnectivityManager
+import com.adrian.weedmapschallenge.domain.RetrofitServiceFactory
+import com.adrian.weedmapschallenge.domain.YelpFusionClient
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
@@ -20,9 +21,7 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideConnectivityManager(context: Context): ConnectivityManager {
-        return context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    fun provideYelpFusionClient(): YelpFusionClient {
+        return RetrofitServiceFactory.createService(YelpFusionClient::class.java)
     }
-
-    // TODO: 8/19/20 location manager
 }
