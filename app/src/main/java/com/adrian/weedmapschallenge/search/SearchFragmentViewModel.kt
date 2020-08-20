@@ -21,6 +21,7 @@ class SearchFragmentViewModel @Inject constructor(
     val businessesLiveData = MutableLiveData<List<Business>>()
     val successfulLocationUpdateLiveData = MutableLiveData<Boolean>()
     val errorToastLiveData = MutableLiveData<String>()
+    val emptyResultsLiveData = MutableLiveData<Boolean>()
 
     fun getSearchResults(searchTerm: CharSequence) {
         viewModelScope.launch {
@@ -39,6 +40,8 @@ class SearchFragmentViewModel @Inject constructor(
                     call: Call<SearchResponse>,
                     response: Response<SearchResponse>
                 ) {
+                    if (response.isSuccessful && response.body()?.total == 0)
+                        emptyResultsLiveData.value = true
                     if (response.isSuccessful) {
                         businessesLiveData.value = response.body()?.businesses
                     } else {

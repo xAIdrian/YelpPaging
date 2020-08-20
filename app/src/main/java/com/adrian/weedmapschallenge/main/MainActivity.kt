@@ -93,7 +93,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 viewModel.getUserLocation()
             } else {
-                Snackbar.make(binding.root, "Please grant permission in setting", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, getString(R.string.error_permission), Snackbar.LENGTH_SHORT).show()
             }
         }
     }

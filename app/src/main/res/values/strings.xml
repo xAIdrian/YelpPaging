@@ -14,5 +14,9 @@
     <string name="search">Search</string>
     <string name="current_location">Current Location</string>
     <string name="got_it">Got It!</string>
-    <string name="error_empty">Error. Needs input.</string>
+    <string name="error_empty">Please input search term</string>
+    <string name="eg_food">eg. Food</string>
+    <string name="empty_results">Sorry, No Results.  \n Search Again For Your Next Favorite Thing</string>
+    <string name="error_location">There was a problem getting your Location :/</string>
+    <string name="error_permission">Please grant permission in setting</string>
 </resources>

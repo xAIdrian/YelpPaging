@@ -1,11 +1,9 @@
 package com.adrian.weedmapschallenge.search
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -37,36 +35,31 @@ class SearchFragment : DaggerFragment() {
                 viewModel.getSearchResults(query)
                 resetSearchView()
             } else {
-                binding.searchHeader.searchView.queryHint(requireActivity().getString(R.string.error_empty))
+                Toast.makeText(requireContext(), requireActivity().getString(R.string.error_empty), Toast.LENGTH_SHORT).show()
             }
         }
         binding.searchHeader.myLocationView.setOnClickListener {
             viewModel.updateLocation()
         }
 
-        binding.searchHeader.searchView.queryHint = "eg. Food"
-        binding.searchHeader.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener,
-            androidx.appcompat.widget.SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(p0: String?): Boolean {
-                Log.e("text submit", p0!!)
-                return false
-            }
-
-            override fun onQueryTextChange(p0: String?): Boolean {
-                Log.e("text change", p0!!)
-                return false
-            }
-        })
+        binding.searchHeader.searchView.queryHint = requireActivity().getString(R.string.eg_food)
 
         viewModel.successfulLocationUpdateLiveData.observe(requireActivity(), Observer {
-            binding.searchHeader.myLocationView.location_text.text = requireActivity().getString(R.string.got_it)
-            binding.searchHeader.myLocationView.location_text.setTextColor(requireActivity().getColor(android.R.color.holo_green_light))
+            if (it) {
+                binding.searchHeader.myLocationView.location_text.text = requireActivity().getString(R.string.got_it)
+                binding.searchHeader.myLocationView.location_text.setTextColor(requireActivity().getColor(android.R.color.holo_green_light))
+            } else {
+                Toast.makeText(requireContext(), requireActivity().getString(R.string.error_location), Toast.LENGTH_SHORT).show()
+            }
         })
         viewModel.businessesLiveData.observe(requireActivity(), Observer {
             // TODO: 8/19/20 update list view
         })
         viewModel.errorToastLiveData.observe(requireActivity(), Observer {
             Toast.makeText(requireActivity(), it, Toast.LENGTH_SHORT).show()
+        })
+        viewModel.emptyResultsLiveData.observe(requireActivity(), Observer {
+            binding.edgeCaseText.visibility = if (it) View.VISIBLE else  View.INVISIBLE
         })
     }
 
@@ -84,4 +77,3 @@ class SearchFragment : DaggerFragment() {
     }
 }
 
-private operator fun CharSequence?.invoke(string: String) = string as CharSequence
