@@ -20,7 +20,7 @@ class SearchFragment : DaggerFragment() {
     @Inject lateinit var factory: ViewModelFactory<SearchFragmentViewModel>
     private lateinit var viewModel: SearchFragmentViewModel
     private lateinit var binding: FragmentSearchBinding
-    private var adapter: SearchAdapter ?= null
+    private var searchAdapter: SearchAdapter = SearchAdapter()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -34,7 +34,6 @@ class SearchFragment : DaggerFragment() {
             val query = binding.searchHeader.searchView.query
             if (query.isNotEmpty()) {
                 viewModel.getSearchResults(query)
-                resetSearchView()
             } else {
                 Toast.makeText(requireContext(), requireActivity().getString(R.string.error_empty), Toast.LENGTH_SHORT).show()
             }
@@ -55,7 +54,7 @@ class SearchFragment : DaggerFragment() {
         binding.searchRecyclerview.apply {
             with(view) {
                 layoutManager = GridLayoutManager(context, 2)
-                adapter = SearchAdapter()
+                adapter = searchAdapter
             }
         }
         return binding.root
@@ -71,7 +70,7 @@ class SearchFragment : DaggerFragment() {
             }
         })
         viewModel.businessesLiveData.observe(requireActivity(), Observer {
-            adapter?.setBusinesses(it)
+            searchAdapter.setBusinesses(it)
         })
         viewModel.errorToastLiveData.observe(requireActivity(), Observer {
             Toast.makeText(requireActivity(), it, Toast.LENGTH_SHORT).show()

@@ -22,7 +22,7 @@ class FusionRepository @Inject constructor(
             .flatMap { searchResponse ->
                 Observable.fromIterable(searchResponse.businesses).flatMap { item ->
                     yelpFusionClient.getBusinessReviews(item.id!!).map { bus -> item to bus.reviews.first() }
-                }//items.first.bestReview = items.second
+                }
             }.toList()
     }
 }

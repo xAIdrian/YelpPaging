@@ -34,10 +34,14 @@ class SearchFragmentViewModel @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .doOnError {
                 errorToastLiveData.value = it.message
-            }
-            .doOnSuccess { result ->
-                Log.e("test", result.size.toString())
-            }
+            }.doOnSuccess { resultPairings ->
+                val reviewedBusinessList = ArrayList<Business>()
+                resultPairings.forEach {
+                    it.first.bestReview = it.second
+                    reviewedBusinessList.add(it.first)
+                }
+                businessesLiveData.value = reviewedBusinessList
+            }.subscribe()
     }
 
     fun updateLocation() {

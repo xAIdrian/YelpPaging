@@ -8,8 +8,7 @@ import com.adrian.weedmapschallenge.data.Business
 import com.adrian.weedmapschallenge.databinding.FragmentListItemSearchBinding
 import com.bumptech.glide.Glide
 
-class SearchAdapter(
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var businesses: List<Business> = ArrayList()
 
@@ -39,6 +38,7 @@ class SearchAdapter(
 //                .placeholder(R.drawable.loading_spinner)
                 .into(localBinding.businessImage)
             localBinding.businessTitle.text = business.name
+            localBinding.businessReview.text = business.bestReview?.text ?: "No Reviews"
         }
     }
 }
