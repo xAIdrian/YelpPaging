@@ -1,14 +1,15 @@
 package com.adrian.weedmapschallenge.domain
 
-import com.adrian.weedmapschallenge.data.SearchResponse
-import retrofit2.Call
+import com.adrian.weedmapschallenge.data.Business
+import com.adrian.weedmapschallenge.data.Reviews
+import io.reactivex.Single
 
 interface IFusionRepository {
 
-    suspend fun getBusinessSearchResponse(
+    fun getBusinessSearchResponse(
         term: String,
         latitude: Double,
         longitude: Double,
         location: String?
-    ): Call<SearchResponse>
+    ): Single<List<Pair<Business, Reviews>>>
 }
