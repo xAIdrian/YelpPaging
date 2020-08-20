@@ -1,9 +1,10 @@
 package com.adrian.weedmapschallenge.search
 
-import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.adrian.weedmapschallenge.common.LocationHelper
+import com.adrian.weedmapschallenge.data.Business
 import com.adrian.weedmapschallenge.data.SearchResponse
 import com.adrian.weedmapschallenge.domain.FusionRepository
 import kotlinx.coroutines.launch
@@ -17,13 +18,19 @@ class SearchFragmentViewModel @Inject constructor(
     private val locationHelper: LocationHelper
 ): ViewModel() {
 
-    fun getSearchResults(searchTerm: String) {
+    val businessesLiveData = MutableLiveData<List<Business>>()
+    val successfulLocationUpdateLiveData = MutableLiveData<Boolean>()
+    val errorToastLiveData = MutableLiveData<String>()
+
+    fun getSearchResults(searchTerm: CharSequence) {
         viewModelScope.launch {
+            val location = locationHelper.getUsersLastLocation()
+
             repository.getBusinessSearchResponse(
-                "Starbucks",
-                40.712776,
-                -74.005974,
-                null
+                searchTerm.toString(),
+                location?.latitude ?: NEW_YORK_LATITUDE,
+                location?.longitude ?: NEW_YORK_LONGITUDE,
+                location.toString()
             ).enqueue(object : Callback<SearchResponse> {
                 override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
                     throw(t)
@@ -32,10 +39,23 @@ class SearchFragmentViewModel @Inject constructor(
                     call: Call<SearchResponse>,
                     response: Response<SearchResponse>
                 ) {
-                    Log.e("class here", response.toString())
+                    if (response.isSuccessful) {
+                        businessesLiveData.value = response.body()?.businesses
+                    } else {
+                        errorToastLiveData.value = response.errorBody().toString()
+                    }
                 }
             })
         }
     }
 
+    fun updateLocation() {
+        successfulLocationUpdateLiveData.value =
+            locationHelper.getUsersLastLocation(true) != null
+    }
+
+    companion object {
+        private const val NEW_YORK_LATITUDE = 40.712776
+        private const val NEW_YORK_LONGITUDE = -74.005974
+    }
 }

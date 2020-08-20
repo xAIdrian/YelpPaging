@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -21,7 +20,6 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
-
 
 class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -42,8 +40,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
         checkLocationPermission()
 
-        setupActionBar()
-        setupNavDrawer()
+        binding.navView.setNavigationItemSelectedListener(this)
     }
 
     override fun onBackPressed() {
@@ -99,24 +96,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 Snackbar.make(binding.root, "Please grant permission in setting", Snackbar.LENGTH_SHORT).show()
             }
         }
-    }
-
-    private fun setupActionBar() {
-        setSupportActionBar(binding.nestedAppBar.toolbar)
-        binding.nestedAppBar.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
-    }
-
-    private fun setupNavDrawer() {
-        val toggle = ActionBarDrawerToggle(
-            this, binding.drawerLayout, binding.nestedAppBar.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        )
-        binding.drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        binding.navView.setNavigationItemSelectedListener(this)
     }
 
     private fun checkLocationPermission() {
