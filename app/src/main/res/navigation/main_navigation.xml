@@ -6,9 +6,9 @@
     app:startDestination="@id/detailsFragment">
 
     <fragment android:id="@+id/detailsFragment"
-        android:name="com.adrian.weedmapschallenge.main.DetailsFragment"
+        android:name="com.adrian.weedmapschallenge.search.SearchFragment"
         android:label="details_fragment"
         android:gravity="center"
-        tools:layout="@layout/details_fragment"/>
+        tools:layout="@layout/fragment_search"/>
 
 </navigation>

@@ -3,7 +3,7 @@ package com.adrian.weedmapschallenge.domain
 import com.adrian.weedmapschallenge.data.SearchResponse
 import retrofit2.Call
 
-interface IMainRepository {
+interface IFusionRepository {
 
     suspend fun getBusinessSearchResponse(
         term: String,

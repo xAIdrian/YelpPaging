@@ -6,9 +6,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class MainRepository @Inject constructor(
+class FusionRepository @Inject constructor(
     private val yelpFusionClient: YelpFusionClient
-) : IMainRepository {
+) : IFusionRepository {
 
     override suspend fun getBusinessSearchResponse(
         term: String,
@@ -18,5 +18,4 @@ class MainRepository @Inject constructor(
     ): Call<SearchResponse> {
         return yelpFusionClient.callForSearchResults(latitude, longitude, location)
     }
-
 }

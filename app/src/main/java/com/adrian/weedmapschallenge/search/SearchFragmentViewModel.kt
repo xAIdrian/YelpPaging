@@ -1,18 +1,20 @@
-package com.adrian.weedmapschallenge.main
+package com.adrian.weedmapschallenge.search
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.adrian.weedmapschallenge.common.LocationHelper
 import com.adrian.weedmapschallenge.data.SearchResponse
-import com.adrian.weedmapschallenge.domain.MainRepository
+import com.adrian.weedmapschallenge.domain.FusionRepository
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor(
-    private val repository: MainRepository
+class SearchFragmentViewModel @Inject constructor(
+    private val repository: FusionRepository,
+    private val locationHelper: LocationHelper
 ): ViewModel() {
 
     fun getSearchResults(searchTerm: String) {

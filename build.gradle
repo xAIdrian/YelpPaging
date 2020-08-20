@@ -45,4 +45,6 @@ ext {
     androidJunitVersion = '1.1.1'
     testRunnerVersion = '1.2.0'
     espressoVersion = '3.2.0'
+
+    gmsVersion = '17.0.0'
 }

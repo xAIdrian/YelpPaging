@@ -1,6 +1,6 @@
 package com.adrian.weedmapschallenge.main
 
-import com.adrian.weedmapschallenge.domain.MainRepository
+import com.adrian.weedmapschallenge.common.LocationHelper
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -10,7 +10,7 @@ class MainActivityModule {
 
     @Provides
     @Singleton
-    fun provideMainViewModel(repository: MainRepository): MainViewModel {
-        return MainViewModel(repository)
+    fun provideMainActivityViewModel(locationHelper: LocationHelper): MainActivityViewModel {
+        return MainActivityViewModel(locationHelper)
     }
 }

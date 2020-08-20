@@ -2,6 +2,7 @@ package com.adrian.weedmapschallenge.dagger
 
 import android.app.Application
 import android.content.Context
+import com.adrian.weedmapschallenge.common.LocationHelper
 import com.adrian.weedmapschallenge.domain.RetrofitServiceFactory
 import com.adrian.weedmapschallenge.domain.YelpFusionClient
 import dagger.Module
@@ -15,13 +16,13 @@ class ApplicationModule {
     @Provides
     @Singleton
     @Named("application.context")
-    fun provideContext(app: Application): Context {
-        return app
-    }
+    fun provideContext(app: Application): Context = app
 
     @Provides
     @Singleton
-    fun provideYelpFusionClient(): YelpFusionClient {
-        return RetrofitServiceFactory.createService(YelpFusionClient::class.java)
-    }
+    fun provideYelpFusionClient() = RetrofitServiceFactory.createService(YelpFusionClient::class.java)
+
+    @Provides
+    @Singleton
+    fun provideLocationManager(context: Context) = LocationHelper(context)
 }
