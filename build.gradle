@@ -53,4 +53,6 @@ ext {
     rxAndroid = '2.0.2'
     rxJava = '2.2.9'
     rxAdapter = '1.0.0'
+
+    pagingVersion = '3.0.0-alpha05'
 }

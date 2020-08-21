@@ -1,15 +1,18 @@
 package com.adrian.weedmapschallenge.domain
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.rxjava2.flowable
+import androidx.paging.rxjava2.observable
 import com.adrian.weedmapschallenge.data.Business
-import com.adrian.weedmapschallenge.data.Reviews
-import io.reactivex.Observable
-import io.reactivex.Single
+import io.reactivex.Flowable
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class FusionRepository @Inject constructor(
-    private val yelpFusionClient: YelpFusionClient
+    private val yelpFusionService: YelpFusionService
 ) : IFusionRepository {
 
     override fun getBusinessSearchResponse(
@@ -17,12 +20,19 @@ class FusionRepository @Inject constructor(
         latitude: Double,
         longitude: Double,
         location: String?
-    ): Single<List<Pair<Business, Reviews>>>{
-        return yelpFusionClient.getSearchResults(latitude, longitude, location)
-            .flatMap { searchResponse ->
-                Observable.fromIterable(searchResponse.businesses).flatMap { item ->
-                    yelpFusionClient.getBusinessReviews(item.id!!).map { bus -> item to bus.reviews.first() }
-                }
-            }.toList()
+    ): Flowable<PagingData<Business>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = NETWORK_PAGE_SIZE,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = {
+                FusionPagingSource(yelpFusionService, term, latitude, longitude, location)
+            }
+        ).flowable
+    }
+
+    companion object {
+        private const val NETWORK_PAGE_SIZE = 20
     }
 }

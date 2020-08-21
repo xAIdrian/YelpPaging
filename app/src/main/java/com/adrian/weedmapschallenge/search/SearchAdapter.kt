@@ -1,31 +1,29 @@
 package com.adrian.weedmapschallenge.search
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.adrian.weedmapschallenge.data.Business
 import com.adrian.weedmapschallenge.databinding.FragmentListItemSearchBinding
 import com.bumptech.glide.Glide
 
-class SearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    private var businesses: List<Business> = ArrayList()
+class SearchAdapter(
+    diffCallback: DiffUtil.ItemCallback<Business>
+) : PagingDataAdapter<Business, RecyclerView.ViewHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding = FragmentListItemSearchBinding.inflate(LayoutInflater.from(parent.context))
         return ViewHolder(binding)
     }
 
-    override fun getItemCount() = businesses.size
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as ViewHolder).bind(businesses[position])
-    }
-
-    fun setBusinesses(businessList: List<Business>) {
-        businesses = businessList
-        notifyDataSetChanged()
+        getItem(position)?.let {
+            (holder as ViewHolder).bind(it)
+        }
     }
 
     inner class ViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {

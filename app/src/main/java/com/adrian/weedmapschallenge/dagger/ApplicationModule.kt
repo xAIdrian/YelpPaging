@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.adrian.weedmapschallenge.common.LocationHelper
 import com.adrian.weedmapschallenge.domain.RetrofitServiceFactory
-import com.adrian.weedmapschallenge.domain.YelpFusionClient
+import com.adrian.weedmapschallenge.domain.YelpFusionService
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
@@ -20,7 +20,7 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideYelpFusionClient() = RetrofitServiceFactory.createService(YelpFusionClient::class.java)
+    fun provideYelpFusionClient() = RetrofitServiceFactory.createService(YelpFusionService::class.java)
 
     @Provides
     @Singleton

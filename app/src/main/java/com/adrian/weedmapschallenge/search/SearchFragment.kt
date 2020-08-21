@@ -7,11 +7,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import com.adrian.weedmapschallenge.R
 import com.adrian.weedmapschallenge.dagger.viewmodel.ViewModelFactory
+import com.adrian.weedmapschallenge.data.Business
 import com.adrian.weedmapschallenge.databinding.FragmentSearchBinding
 import dagger.android.support.DaggerFragment
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.layout_search_header.view.*
 import javax.inject.Inject
 
@@ -20,7 +23,9 @@ class SearchFragment : DaggerFragment() {
     @Inject lateinit var factory: ViewModelFactory<SearchFragmentViewModel>
     private lateinit var viewModel: SearchFragmentViewModel
     private lateinit var binding: FragmentSearchBinding
-    private var searchAdapter: SearchAdapter = SearchAdapter()
+
+    private var searchAdapter: SearchAdapter = SearchAdapter(COMPARATOR_DIFF)
+    private var disposable = CompositeDisposable()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -30,10 +35,17 @@ class SearchFragment : DaggerFragment() {
         binding.searchHeader.cancel.setOnClickListener {
             resetSearchView()
         }
+
+        disposable.add(viewModel.searchYelp("coffee").subscribe { pagingData ->
+            searchAdapter.submitData(lifecycle, pagingData)
+        })
+
         binding.searchHeader.search.setOnClickListener {
             val query = binding.searchHeader.searchView.query
             if (query.isNotEmpty()) {
-                viewModel.getSearchResults(query)
+                viewModel.searchYelp(query).subscribe { pagingData ->
+                    searchAdapter.submitData(lifecycle, pagingData)
+                }
             } else {
                 Toast.makeText(requireContext(), requireActivity().getString(R.string.error_empty), Toast.LENGTH_SHORT).show()
             }
@@ -60,6 +72,11 @@ class SearchFragment : DaggerFragment() {
         return binding.root
     }
 
+    override fun onDestroyView() {
+        disposable.dispose()
+        super.onDestroyView()
+    }
+
     private fun setObservers() {
         viewModel.successfulLocationUpdateLiveData.observe(requireActivity(), Observer {
             if (it) {
@@ -70,7 +87,8 @@ class SearchFragment : DaggerFragment() {
             }
         })
         viewModel.businessesLiveData.observe(requireActivity(), Observer {
-            searchAdapter.setBusinesses(it)
+//            searchAdapter.setBusinesses(it)
+            val gr = it
         })
         viewModel.errorToastLiveData.observe(requireActivity(), Observer {
             Toast.makeText(requireActivity(), it, Toast.LENGTH_SHORT).show()
@@ -83,6 +101,29 @@ class SearchFragment : DaggerFragment() {
     private fun resetSearchView() {
         binding.searchHeader.searchView.setQuery("", false);
         binding.searchHeader.searchView.clearFocus();
+    }
+
+    // TODO: 8/20/20
+    private fun showEmptyList(show: Boolean) {
+//        if (show) {
+//            binding.emptyList.visibility = View.VISIBLE
+//            binding.list.visibility = View.GONE
+//        } else {
+//            binding.emptyList.visibility = View.GONE
+//            binding.list.visibility = View.VISIBLE
+//        }
+    }
+
+    companion object {
+        private val COMPARATOR_DIFF = object : DiffUtil.ItemCallback<Business>() {
+            override fun areItemsTheSame(oldItem: Business, newItem: Business): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: Business, newItem: Business): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 }
 
