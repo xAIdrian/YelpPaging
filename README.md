@@ -45,10 +45,10 @@ We decided on having the search entering and results all displayed in a single f
 There was also the option that when a user wants to search for their actual term that we go with Google recommended approach of Implementing a search interface this seemed outside of the scope for this project and we could take a piece with SearchView.  I like the idea of keeping search results within the same fragment and limiting navigation for the user.  Queries are not needed as this is being handled by the api we are outsourcing to.
 
 In order to get an endless list we need to pagination and here are the problems it solves
-The list grows unbounded in memory, wasting memory as the user scrolls.
 
-We have to convert our results from Flow to LiveData to cache them, increasing the complexity of our code.
-If our app needed to show multiple lists, we'd see that there is a lot of boilerplate to write for each list.
+- The list grows unbounded in memory, wasting memory as the user scrolls.
+- We have to convert our results from Flow to LiveData to cache them, increasing the complexity of our code.
+- If our app needed to show multiple lists, we'd see that there is a lot of boilerplate to write for each list.
 
 Typically, your UI code observes a LiveData<PagedList> object (or, if you're using RxJava2, a Flowable<PagedList> or Observable<PagedList> object), which resides in your app's ViewModel. This observable object forms a connection between the presentation and contents of your app's list data.
   
