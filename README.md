@@ -57,3 +57,19 @@ Typically, your UI code observes a LiveData<PagedList> object (or, if you're usi
 In order to create one of these observable PagedList objects, pass in an instance of DataSource.Factory to a LivePagedListBuilder or RxPagedListBuilder object. A DataSource object loads pages for a single PagedList. The factory class creates new instances of PagedList in response to content updates, such as database table invalidations and network refreshes. The Room persistence library can provide DataSource.Factory objects for you, or you can build your own.
 
 ![download](https://user-images.githubusercontent.com/7444521/90906105-251a3080-e39f-11ea-8c3b-21dc5add7e1b.png)
+
+#### I had the following questions during development but never heard back :/
+
+1. During my interview with Matt he mentioned that currently you are
+using Koin for dependency injection in your application but intending
+to migrate to Dagger.  Do you mind if I use Dagger (from Google) in my
+project?
+2. Pagination is one of the criteria.  This is sometimes accomplished
+with a local cache where we fetch paginated data while we backup the
+cache with network requests.  Are we expecting local storage as part
+of the deliverable or is that sort of optional?
+3. Which leads into my next question.  It seems like there is a good
+number of things to accomplish with the instructions "You may spend no
+longer than 3 days to return back."  What would YOU like to see
+completed as a priority in this project?
+4. When I send the completed project in email would you prefer .apk or .aab?
