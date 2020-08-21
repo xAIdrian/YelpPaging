@@ -16,7 +16,6 @@ class SearchFragmentViewModel @Inject constructor(
     private val locationHelper: LocationHelper
 ) : ViewModel() {
 
-    val businessesLiveData = MutableLiveData<PagingData<List<Business>>>()
     val successfulLocationUpdateLiveData = MutableLiveData<Boolean>()
     val errorToastLiveData = MutableLiveData<String>()
     val emptyResultsLiveData = MutableLiveData<Boolean>()

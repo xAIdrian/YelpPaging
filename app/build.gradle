@@ -38,6 +38,13 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
+
+    annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
+    annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.dagger2Version"
+    kapt "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
+    kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger2Version"
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.legacy:legacy-support-v4:$rootProject.legacyVersion"
     implementation "com.google.android.material:material:$rootProject.materialVersion"
@@ -54,17 +61,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleVersion"
     implementation "com.google.android.gms:play-services-location:$rootProject.gmsVersion"
 
-    testImplementation "junit:junit:$rootProject.junitVersion"
-    androidTestImplementation "androidx.test:runner:$rootProject.testRunnerVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
-    androidTestImplementation "androidx.test.ext:junit:$rootProject.androidJunitVersion"
-
     implementation "com.google.dagger:dagger:$rootProject.dagger2Version"
     implementation "com.google.dagger:dagger-android-support:$rootProject.dagger2Version"
-    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
-    annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.dagger2Version"
-    kapt "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
-    kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger2Version"
 
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
@@ -77,16 +75,20 @@ dependencies {
 
     implementation "com.android.support:cardview-v7:$rootProject.cardViewVersion"
     implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
-    annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
 
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroid"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJava"
     implementation "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:$rootProject.rxAdapter"
+
     implementation "androidx.paging:paging-runtime:$rootProject.pagingVersion"
-
-    // alternatively - without Android dependencies for tests
-    testImplementation "androidx.paging:paging-common:$rootProject.pagingVersion"
-
-    // optional - RxJava2 support
     implementation "androidx.paging:paging-rxjava2:$rootProject.pagingVersion"
+
+    testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
+    testImplementation "androidx.paging:paging-common:$rootProject.pagingVersion"
+    testImplementation "junit:junit:$rootProject.junitVersion"
+    androidTestImplementation "androidx.test:runner:$rootProject.testRunnerVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
+    androidTestImplementation "androidx.test.ext:junit:$rootProject.androidJunitVersion"
+
+    androidTestImplementation "androidx.arch.core:core-testing:$rootProject.coreTesting"
 }
