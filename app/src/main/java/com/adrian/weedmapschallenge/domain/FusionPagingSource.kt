@@ -7,23 +7,24 @@ import com.adrian.weedmapschallenge.data.Reviews
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class FusionPagingSource @Inject constructor(
     private val yelpFusionService: YelpFusionService,
     private val query: String,
     private val latitude: Double,
-    private val longitude: Double,
-    private val location: String?
+    private val longitude: Double
 ) : RxPagingSource<Int, Business>() {
 
     override fun loadSingle(params: LoadParams<Int>): Single<LoadResult<Int, Business>> {
         val pagingOffsetKey = params.key ?: STARTING_OFFSET_VALUE
-        return yelpFusionService.getSearchResults(query, latitude, longitude, location, pagingOffsetKey)
+        return yelpFusionService.getSearchResults(query, latitude, longitude, pagingOffsetKey)
             .subscribeOn(Schedulers.io())
             .flatMap { searchResponse ->
 
                 Observable.fromIterable(searchResponse.businesses)
+                    .throttleFirst(200, TimeUnit.MILLISECONDS)
                     .flatMap { item ->
                         yelpFusionService.getBusinessReviews(item.id!!)
                             .map { bus -> item to bus.reviews.firstOrNull() }

@@ -15,7 +15,6 @@ interface YelpFusionService {
         @Query("term") term: String?,
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double,
-        @Query("location") location: String?,
         @Query("offset") offset: Int? = 0
     ): Observable<SearchResponse>
 

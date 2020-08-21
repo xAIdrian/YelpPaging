@@ -17,12 +17,12 @@
         android:padding="12dp">
 
         <TextView
-            android:id="@+id/cancel"
+            android:id="@+id/clear"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cancel"
+            android:text="@string/clear"
             android:textColor="@android:color/white"
             android:textSize="22sp" />
 

@@ -4,7 +4,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.rxjava2.flowable
-import androidx.paging.rxjava2.observable
 import com.adrian.weedmapschallenge.data.Business
 import io.reactivex.Flowable
 import javax.inject.Inject
@@ -18,8 +17,7 @@ class FusionRepository @Inject constructor(
     override fun getBusinessSearchResponse(
         term: String,
         latitude: Double,
-        longitude: Double,
-        location: String?
+        longitude: Double
     ): Flowable<PagingData<Business>> {
         return Pager(
             config = PagingConfig(
@@ -27,7 +25,7 @@ class FusionRepository @Inject constructor(
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {
-                FusionPagingSource(yelpFusionService, term, latitude, longitude, location)
+                FusionPagingSource(yelpFusionService, term, latitude, longitude)
             }
         ).flowable
     }

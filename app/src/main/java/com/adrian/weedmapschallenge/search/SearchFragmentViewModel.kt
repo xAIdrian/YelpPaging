@@ -1,6 +1,5 @@
 package com.adrian.weedmapschallenge.search
 
-import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -28,8 +27,7 @@ class SearchFragmentViewModel @Inject constructor(
         return repository.getBusinessSearchResponse(
             searchTerm.toString(),
             location?.latitude ?: NEW_YORK_LATITUDE,
-            location?.longitude ?: NEW_YORK_LONGITUDE,
-            location.toString()
+            location?.longitude ?: NEW_YORK_LONGITUDE
         ).cachedIn(viewModelScope)
     }
 

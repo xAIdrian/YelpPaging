@@ -11,9 +11,7 @@ import com.adrian.weedmapschallenge.data.Business
 import com.adrian.weedmapschallenge.databinding.FragmentListItemSearchBinding
 import com.bumptech.glide.Glide
 
-class SearchAdapter(
-    diffCallback: DiffUtil.ItemCallback<Business>
-) : PagingDataAdapter<Business, RecyclerView.ViewHolder>(diffCallback) {
+class SearchAdapter : PagingDataAdapter<Business, RecyclerView.ViewHolder>(COMPARATOR_DIFF) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding = FragmentListItemSearchBinding.inflate(LayoutInflater.from(parent.context))
@@ -37,6 +35,18 @@ class SearchAdapter(
                 .into(localBinding.businessImage)
             localBinding.businessTitle.text = business.name
             localBinding.businessReview.text = business.bestReview?.text ?: "No Reviews"
+        }
+    }
+
+    companion object {
+        val COMPARATOR_DIFF = object : DiffUtil.ItemCallback<Business>() {
+            override fun areItemsTheSame(oldItem: Business, newItem: Business): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: Business, newItem: Business): Boolean {
+                return oldItem == newItem
+            }
         }
     }
 }
