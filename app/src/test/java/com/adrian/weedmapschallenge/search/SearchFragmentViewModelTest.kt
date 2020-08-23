@@ -1,22 +1,23 @@
 package com.adrian.weedmapschallenge.search
 
+import android.location.Location
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.adrian.weedmapschallenge.common.LocationHelper
 import com.adrian.weedmapschallenge.domain.FusionRepository
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import com.adrian.weedmapschallenge.getOrAwaitValue
+import junit.framework.Assert.assertEquals
+import org.junit.*
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mock
+import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 
 
 @RunWith(JUnit4::class)
 internal class SearchFragmentViewModelTest {
 
-    @Rule
+    @Rule @JvmField
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Mock
@@ -34,30 +35,29 @@ internal class SearchFragmentViewModelTest {
 
     @After
     fun tearDown() {
+
     }
 
     @Test
-    fun getBusinessesLiveData() {
+    fun updateUserLocation_updatesLiveData_asTrue() {
+        val expectedLocation = Location("")
+        expectedLocation.latitude = TEST_LATITUDE
+        expectedLocation.longitude = TEST_LONGITUDE
+
+        `when`(mockLocationHelper.getUsersLastLocation()).thenReturn(expectedLocation)
+
+        viewModel.updateLocation()
+
+        assertEquals(true, viewModel.successfulLocationUpdateLiveData.getOrAwaitValue())
     }
 
-   @Test
-    fun getSuccessfulLocationUpdateLiveData() {
+    @Test
+    fun updateUserLocation_updatesLiveData_withNullLocation_asFalse() {
     }
 
-   @Test
-    fun getErrorToastLiveData() {
-    }
-
-   @Test
-    fun getEmptyResultsLiveData() {
-    }
-
-   @Test
-    fun searchYelp() {
-    }
-
-   @Test
-    fun updateLocation() {
+    companion object {
+        private const val TEST_LATITUDE = 60.00
+        private const val TEST_LONGITUDE = 9.00
     }
 }
 

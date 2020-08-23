@@ -34,6 +34,10 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -86,9 +90,9 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testImplementation "androidx.paging:paging-common:$rootProject.pagingVersion"
     testImplementation "junit:junit:$rootProject.junitVersion"
-    androidTestImplementation "androidx.test:runner:$rootProject.testRunnerVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
-    androidTestImplementation "androidx.test.ext:junit:$rootProject.androidJunitVersion"
+    testImplementation "androidx.test:runner:$rootProject.testRunnerVersion"
+    testImplementation "androidx.test.ext:junit:$rootProject.androidJunitVersion"
 
-    androidTestImplementation "androidx.arch.core:core-testing:$rootProject.coreTesting"
+    testImplementation "androidx.arch.core:core-testing:$rootProject.coreTesting"
+
 }

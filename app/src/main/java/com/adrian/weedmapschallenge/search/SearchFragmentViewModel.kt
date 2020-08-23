@@ -9,6 +9,7 @@ import com.adrian.weedmapschallenge.common.LocationHelper
 import com.adrian.weedmapschallenge.data.Business
 import com.adrian.weedmapschallenge.domain.FusionRepository
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import javax.inject.Inject
 
 class SearchFragmentViewModel @Inject constructor(
@@ -20,19 +21,19 @@ class SearchFragmentViewModel @Inject constructor(
     val errorToastLiveData = MutableLiveData<String>()
     val emptyResultsLiveData = MutableLiveData<Boolean>()
 
-    fun searchYelp(searchTerm: CharSequence): Flowable<PagingData<Business>> {
-        val location = locationHelper.getUsersLastLocation()
-
-        return repository.getBusinessSearchResponse(
-            searchTerm.toString(),
-            location?.latitude ?: NEW_YORK_LATITUDE,
-            location?.longitude ?: NEW_YORK_LONGITUDE
-        ).cachedIn(viewModelScope)
+    fun searchYelp(searchTerm: CharSequence): Observable<PagingData<Business>> {
+        return locationHelper.getUsersLastLocation()
+            .flatMapObservable { location ->
+                repository.getBusinessSearchResponse(
+                    searchTerm.toString(),
+                    location.latitude,
+                    location.longitude
+                ).cachedIn(viewModelScope)
+            }
     }
 
     fun updateLocation() {
-        successfulLocationUpdateLiveData.value =
-            locationHelper.getUsersLastLocation(true) != null
+        successfulLocationUpdateLiveData.value = locationHelper.getUsersLastLocation()
     }
 
     companion object {

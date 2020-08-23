@@ -55,6 +55,6 @@ ext {
     rxAdapter = '1.0.0'
 
     pagingVersion = '3.0.0-alpha05'
-    mockitoVersion = '1.10.19'
+    mockitoVersion = '3.3.3'
     coreTesting = '2.1.0'
 }
