@@ -98,9 +98,16 @@ class SearchFragment : DaggerFragment() {
     private fun submitQuery() {
         val query = binding.searchHeader.searchView.query
         if (query?.isNotEmpty() == true) {
-            disposable.add(viewModel.searchYelp(query).subscribe { pagingData ->
-                searchAdapter.submitData(lifecycle, pagingData)
-            })
+            disposable.add(viewModel.searchYelp(query)
+                .subscribe({ pagingData ->
+                    searchAdapter.submitData(lifecycle, pagingData)
+                }, {
+                    Toast.makeText(
+                        requireContext(),
+                        requireActivity().getString(R.string.error_location),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }))
         } else {
             Toast.makeText(
                 requireContext(),

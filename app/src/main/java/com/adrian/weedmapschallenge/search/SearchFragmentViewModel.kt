@@ -41,10 +41,12 @@ class SearchFragmentViewModel @Inject constructor(
             .getUsersLastLocation()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnError { throwable -> errorToastLiveData.value = throwable.message }
-            .subscribe { location ->
+            .subscribe({ location ->
                 successfulLocationUpdateLiveData.value = location != null
+            }, { throwable ->
+                errorToastLiveData.value = throwable.message
             }
+            )
     }
 
     companion object {
