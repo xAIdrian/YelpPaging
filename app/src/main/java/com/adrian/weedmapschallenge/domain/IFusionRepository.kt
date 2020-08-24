@@ -3,6 +3,7 @@ package com.adrian.weedmapschallenge.domain
 import androidx.paging.PagingData
 import com.adrian.weedmapschallenge.data.Business
 import io.reactivex.Flowable
+import io.reactivex.Observable
 
 interface IFusionRepository {
 
@@ -10,5 +11,5 @@ interface IFusionRepository {
         term: String,
         latitude: Double,
         longitude: Double
-    ): Flowable<PagingData<Business>>
+    ): Observable<PagingData<Business>>
 }

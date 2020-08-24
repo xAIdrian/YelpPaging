@@ -4,8 +4,10 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.rxjava2.flowable
+import androidx.paging.rxjava2.observable
 import com.adrian.weedmapschallenge.data.Business
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,7 +20,7 @@ class FusionRepository @Inject constructor(
         term: String,
         latitude: Double,
         longitude: Double
-    ): Flowable<PagingData<Business>> {
+    ): Observable<PagingData<Business>> {
         return Pager(
             config = PagingConfig(
                 pageSize = NETWORK_PAGE_SIZE,
@@ -27,7 +29,7 @@ class FusionRepository @Inject constructor(
             pagingSourceFactory = {
                 FusionPagingSource(yelpFusionService, term, latitude, longitude)
             }
-        ).flowable
+        ).observable
     }
 
     companion object {

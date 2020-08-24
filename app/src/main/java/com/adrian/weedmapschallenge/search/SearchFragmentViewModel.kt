@@ -1,5 +1,6 @@
 package com.adrian.weedmapschallenge.search
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +10,9 @@ import com.adrian.weedmapschallenge.common.LocationHelper
 import com.adrian.weedmapschallenge.data.Business
 import com.adrian.weedmapschallenge.domain.FusionRepository
 import io.reactivex.Flowable
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class SearchFragmentViewModel @Inject constructor(
@@ -20,19 +24,27 @@ class SearchFragmentViewModel @Inject constructor(
     val errorToastLiveData = MutableLiveData<String>()
     val emptyResultsLiveData = MutableLiveData<Boolean>()
 
-    fun searchYelp(searchTerm: CharSequence): Flowable<PagingData<Business>> {
-        val location = locationHelper.getUsersLastLocation()
-
-        return repository.getBusinessSearchResponse(
-            searchTerm.toString(),
-            location?.latitude ?: NEW_YORK_LATITUDE,
-            location?.longitude ?: NEW_YORK_LONGITUDE
-        ).cachedIn(viewModelScope)
+    fun searchYelp(searchTerm: CharSequence): Observable<PagingData<Business>> {
+        return locationHelper.getUsersLastLocation()
+            .flatMapObservable { location ->
+                repository.getBusinessSearchResponse(
+                    searchTerm.toString(),
+                    location.latitude,
+                    location.longitude
+                ).cachedIn(viewModelScope)
+            }.doOnError { throwable -> errorToastLiveData.value = throwable.message }
     }
 
+    @SuppressLint("CheckResult")
     fun updateLocation() {
-        successfulLocationUpdateLiveData.value =
-            locationHelper.getUsersLastLocation(true) != null
+        locationHelper
+            .getUsersLastLocation()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnError { throwable -> errorToastLiveData.value = throwable.message }
+            .subscribe { location ->
+                successfulLocationUpdateLiveData.value = location != null
+            }
     }
 
     companion object {

@@ -8,6 +8,7 @@ import android.location.Location
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import io.reactivex.Single
 import javax.inject.Inject
 
 
@@ -29,20 +30,23 @@ class LocationHelper @Inject constructor(
      * to get the actual location once we
      */
     @SuppressLint("MissingPermission")
-    fun getUsersLastLocation(getFreshLocation: Boolean = false): Location? {
+    fun getUsersLastLocation(getFreshLocation: Boolean = false): Single<Location> {
 
-        if (lastFetchedLocation != null && !getFreshLocation) {
-            return lastFetchedLocation
-        } else if (isLocationEnabled()) {
-            fusedLocationClient.locationAvailability
-                .addOnSuccessListener { locationAvailability ->
-                    if (locationAvailability.isLocationAvailable) {
-                        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                            lastFetchedLocation = location
+        return Single.create { emitter ->
+            if (lastFetchedLocation != null && !getFreshLocation) {
+                emitter.onSuccess(lastFetchedLocation!!)
+            } else if (isLocationEnabled()) {
+                fusedLocationClient
+                    .locationAvailability
+                    .addOnSuccessListener { locationAvailability ->
+                        if (locationAvailability.isLocationAvailable) {
+                            fusedLocationClient
+                                .lastLocation
+                                .addOnSuccessListener { location ->
+                                    emitter.onSuccess(location)
+                                }
                         }
                     }
-                }
-        }
-        return lastFetchedLocation
+            } else emitter.onError(Throwable("You haven't given the permissions"))}
     }
 }

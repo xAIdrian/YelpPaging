@@ -12,7 +12,6 @@ import org.junit.runners.JUnit4
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 
-
 @RunWith(JUnit4::class)
 internal class SearchFragmentViewModelTest {
 
