@@ -1,7 +1,4 @@
-# Weedmaps Challenge
-[Adrian Mohnacs on LinkedIn](https://www.linkedin.com/in/adrian-mohnacs/)
-
-[Adrian Mohnacs Resume on Google Drive](https://docs.google.com/document/d/1WQfMaqPqGWNrQrmuXL4B5onvGS1fJfx8j4DmHciNQ4I/edit?usp=sharing)
+# Yelp Paging
 
 ![20200821_113150](https://user-images.githubusercontent.com/7444521/90908230-18e3a280-e3a2-11ea-9747-919efdc12e95.jpg)
 
